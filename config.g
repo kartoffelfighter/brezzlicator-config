@@ -16,18 +16,20 @@ M586 P1 S0                                             ; disable FTP
 M586 P2 S0                                             ; disable Telnet
 
 ; Drives
-M569 P0 S0                                             ; physical drive 0 goes backwards
-M569 P1 S1                                             ; physical drive 1 goes forwards
+M569 P0 S0                                             ; physical drive 0 goes forwards
+M569 P1 S1                                             ; physical drive 1 goes backwards
 M569 P2 S1                                             ; physical drive 2 goes forwards
-M569 P3 S1                                             ; physical drive 3 goes forwards
-M569 P4 S1                                             ; physical drive 4 goes forwards
-M584 X0 Y1 Z2 E3:4                                     ; set drive mapping
-M350 X32 Y32 Z32 E32:32 I1                             ; configure microstepping with interpolation
+M569 P3 S0                                             ; physical drive 3 goes forwards
+M569 P4 S0                                             ; physical drive 4 goes forwards
+M569 P5 S0                                             ; physical drive 4 goes forwards
+M569 P6 S0                                             ; physical drive 4 goes forwards
+M584 X0 Y1 Z5:6 E4:3                                   ; set drive mapping: x to x, y to y, z to expansion 5 & 6, Extruders on 3&4
+M350 X32 Y32 Z32:32 E32:32 I1                          ; configure microstepping with interpolation
 M92 X200.00 Y200.00 Z800.00 E1674.40:1674.40           ; set steps per mm
 M566 X900.00 Y900.00 Z12.00 E120.00:120.00             ; set maximum instantaneous speed changes (mm/min)
 M203 X6000.00 Y6000.00 Z180.00 E1200.00:1200.00        ; set maximum speeds (mm/min)
 M201 X500.00 Y500.00 Z20.00 E250.00:250.00             ; set accelerations (mm/s^2)
-M906 X800 Y800 Z1000 E650:650 I30                      ; set motor currents (mA) and motor idle factor in per cent
+M906 X800 Y800 Z500:500 E650:650 I30                  ; set motor currents (mA) and motor idle factor in per cent
 M84 S120                                               ; Set idle timeout
 
 ; Axis Limits
@@ -35,15 +37,14 @@ M208 X0 Y0 Z0 S1                                       ; set axis minima
 M208 X300 Y300 Z300 S0                                 ; set axis maxima
 
 ; Endstops
-M574 X2 S1 P"xstop"                                    ; configure active-high endstop for high end on X via pin xstop
-M574 Y1 S1 P"ystop"                                    ; configure active-high endstop for low end on Y via pin ystop
-M574 Z1 S2                                             ; configure Z-probe endstop for low end on Z
+M574 X2 S1 P"xstop"                                    ; configure active-low endstop for low end on X via pin xstop
+M574 Y1 S1 P"ystop"                                    ; configure active-low endstop for high end on Y via pin ystop
+M574 Z0	                                               ; no endstop on z
 
 ; Z-Probe
 M950 S0 C"^zprobe.mod"                                 ; create servo pin 0 for BLTouch
 M558 P9 C"^zprobe.in" H5 F120 T6000                    ; set Z probe type to bltouch and the dive height + speeds
-M558 H30                                               ;*** Remove this line after delta calibration has been done and new delta parameters have been saved
-G31 P500 X0 Y0 Z2.5                                    ; set Z probe trigger value, offset and trigger height
+G31 P500 X0 Y0 Z4.55                                    ; set Z probe trigger value, offset and trigger height
 M557 X15:215 Y15:195 S20                               ; define mesh grid
 
 ; Heaters
@@ -62,19 +63,19 @@ M307 H2 B0 S1.00                                       ; disable bang-bang mode 
 M143 H2 S280                                           ; set temperature limit for heater 2 to 280C
 
 ; Fans
-M950 F0 C"fan0" Q500                                   ; create fan 0 on pin fan0 and set its frequency
-M106 P0 S0 H0:1:2 T45                                  ; set fan 0 value. Thermostatic control is turned on
-M950 F1 C"fan1" Q500                                   ; create fan 1 on pin fan1 and set its frequency
-M106 P1 S1 H1:2 T45                                    ; set fan 1 value. Thermostatic control is turned on
 M950 F2 C"fan2" Q500                                   ; create fan 2 on pin fan2 and set its frequency
 M106 P2 S1 H1:2 T45                                    ; set fan 2 value. Thermostatic control is turned on
+M950 F0 C"fan0" Q500                           ; create fan 0 on pin fan0 and set its frequency
+M106 P0 C"tool_fan" S0 H-1                     ; set fan 0 name and value. Thermostatic control is turned off
+M950 F1 C"fan1" Q500                           ; create fan 1 on pin fan1 and set its frequency
+M106 P1 C"heatblock_fan" S1 H0:1:2 T45             ; set fan 1 name and value. Thermostatic control is turned on
 
 ; Tools
-M563 P0 S"Titan Left" D0 H1 F0                         ; define tool 0
+M563 P0 S"Titan Right" D0 H1 F0                         ; define tool 0
 G10 P0 X0 Y0 Z0                                        ; set tool 0 axis offsets
 G10 P0 R0 S0                                           ; set initial tool 0 active and standby temperatures to 0C
-M563 P1 S"Titan Right" D1 H2 F0                        ; define tool 1
-G10 P1 X0 Y0 Z0                                        ; set tool 1 axis offsets
+M563 P1 S"Titan Left" D1 H2 F0                        ; define tool 1
+G10 P1 X18 Y0 Z0                                        ; set tool 1 axis offsets
 G10 P1 R0 S0                                           ; set initial tool 1 active and standby temperatures to 0C
 
 ; Custom settings are not defined
