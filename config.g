@@ -29,7 +29,7 @@ M92 X200.00 Y200.00 Z800.00 E1674.40:1674.40           ; set steps per mm
 M566 X900.00 Y900.00 Z12.00 E120.00:120.00             ; set maximum instantaneous speed changes (mm/min)
 M203 X6000.00 Y6000.00 Z180.00 E1200.00:1200.00        ; set maximum speeds (mm/min)
 M201 X500.00 Y500.00 Z20.00 E250.00:250.00             ; set accelerations (mm/s^2)
-M906 X800 Y800 Z500:500 E650:650 I30                  ; set motor currents (mA) and motor idle factor in per cent
+M906 X800 Y800 Z500:500 E800:800 I30                  ; set motor currents (mA) and motor idle factor in per cent
 M84 S120                                               ; Set idle timeout
 
 ; Axis Limits
@@ -44,7 +44,7 @@ M574 Z0	                                               ; no endstop on z
 ; Z-Probe
 M950 S0 C"^zprobe.mod"                                 ; create servo pin 0 for BLTouch
 M558 P9 C"^zprobe.in" H5 F120 T6000                    ; set Z probe type to bltouch and the dive height + speeds
-G31 P500 X0 Y0 Z4.55                                    ; set Z probe trigger value, offset and trigger height
+G31 P500 X0 Y0 Z3.9                                   ; set Z probe trigger value, offset and trigger height
 M557 X15:215 Y15:195 S20                               ; define mesh grid
 
 ; Heaters

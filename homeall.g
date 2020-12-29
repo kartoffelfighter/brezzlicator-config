@@ -10,13 +10,10 @@ G1 H1 Y-305            ; home Y axis
 G1 X-5 Y5 F6000        ; go back a few mm
 G1 H1 X305 F360        ; move slowly to X axis endstop once more (second pass)
 G1 H1 Y-305            ; then move slowly to Y axis endstop
-G90                    ; absolute positioning
-G1 X15 Y15 F6000       ; go to first bed probe point and home Z
-G30                    ; home Z by probing the bed
+G90               		; absolute positioning
+G0 X270 Y30 H4 F6000 	; go to first probe point
+G30               		; home Z by probing the bed
 
-; Uncomment the following lines to lift Z after probing
-;G91                   ; relative positioning
-;G1 Z5 F100            ; lift Z relative to current position
-;G90                   ; absolute positioning
-
-
+; probe the two motors
+G30 P0 X250 Y150 Z-99999 F6000		; probe near a leadscrew
+G30 P1 X50 Y150 Z-99999 			; probe near a leadscrew
